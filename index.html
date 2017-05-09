@@ -75,11 +75,15 @@
                     settings.searchFunction(searchTerm, renderSearchResults);
                 };
 
-                var renderSearchResults = function(searchTerm) {
+                var renderSearchResults = function(searchTerm, users) {
                     // temporary
                     document.querySelector('.' + settings.classname + ' .results').style.display = 'block';
 
                     // create list items
+                    console.log(users);
+                    // avatar_url
+                    // html_url
+                    // login
 
                     // highlight searchTerm
                 };
@@ -91,9 +95,15 @@
             searchbox({
                 classname: 'githubSearchbox',
                 searchFunction: function(searchTerm, callback) {
-                    // https://api.github.com/search/users
-                    // 54921be5ba13b13089a7b18f3e8650a8237c1d02
-                    callback(searchTerm);
+                    var url = 'https://api.github.com/search/users?access_token=54921be5ba13b13089a7b18f3e8650a8237c1d02&q=' + encodeURIComponent(searchTerm); // seriously?!
+
+                    fetch(url).then(function(response) {
+                        if(response.ok) {
+                            response.json().then(function(users) {
+                                callback(searchTerm, users);
+                            });
+                        }
+                    });
                 }
             });
         })();
