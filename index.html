@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            .searchbox {
+
+            }
+            .searchbox .searchfield {
+
+            }
+            .searchbox .results {
+                display: none;
+            }
+            .searchbox .user {
+                list-style: none;
+                border: 1px solid black;
+                border-top: 0;
+                padding: 1em;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="searchbox githubSearchbox">
+            <input class="searchfield" placeholder="type a github username" type="search">
+            <ul class="results">
+                <li class="user">
+                    <img class="avatar" src="">
+                    <span class="name">Name 1</span>
+                </li>
+                <li class="user">
+                    <img class="avatar" src="">
+                    <span class="name">Name 2</span>
+                </li>
+                <li class="user">
+                    <img class="avatar" src="">
+                    <span class="name">Name 3</span>
+                </li>
+            </ul>
+        </div>
+
+        <section>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus tincidunt justo est, vitae fringilla turpis pulvinar vitae. Curabitur eget pellentesque nisi. Ut id ante id ex convallis pretium vulputate quis ante. Sed nec arcu id magna vehicula interdum. Nam gravida laoreet dignissim. Phasellus mauris dolor, blandit fermentum tincidunt sit amet, pretium a augue. Nullam vel augue vitae neque pharetra tristique. Aenean quis erat vel enim blandit finibus ut ac ex. Phasellus varius ligula in condimentum elementum. Duis id ipsum at arcu hendrerit posuere. Praesent eget iaculis massa, nec iaculis eros.</p>
+            <p>Nulla lobortis rutrum tempus. Cras aliquet eu lectus ac viverra. Donec vestibulum ipsum eu felis pretium ullamcorper. Mauris mattis, dolor vitae consectetur consectetur, ex nisi aliquam tortor, a accumsan dui mauris eu lectus. Etiam in sodales lorem, a condimentum mi. Donec bibendum ante quis nisl tincidunt, vel pretium libero posuere. Sed efficitur ultrices augue ac cursus. Curabitur id magna sit amet ipsum pharetra fringilla nec lobortis augue. Curabitur euismod massa eget metus venenatis bibendum. Nullam in lorem sodales, tincidunt mi sed, facilisis eros. Etiam viverra non erat at gravida. Etiam nec lorem augue. Fusce blandit dui sem, in congue massa commodo eu. Integer suscipit, diam feugiat porta fermentum, sapien felis tincidunt tellus, vel gravida diam mi in quam. Fusce euismod quam ipsum, ac pharetra dui cursus in.</p>
+        </section>
+        <section>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus tincidunt justo est, vitae fringilla turpis pulvinar vitae. Curabitur eget pellentesque nisi. Ut id ante id ex convallis pretium vulputate quis ante. Sed nec arcu id magna vehicula interdum. Nam gravida laoreet dignissim. Phasellus mauris dolor, blandit fermentum tincidunt sit amet, pretium a augue. Nullam vel augue vitae neque pharetra tristique. Aenean quis erat vel enim blandit finibus ut ac ex. Phasellus varius ligula in condimentum elementum. Duis id ipsum at arcu hendrerit posuere. Praesent eget iaculis massa, nec iaculis eros.</p>
+            <p>Nulla lobortis rutrum tempus. Cras aliquet eu lectus ac viverra. Donec vestibulum ipsum eu felis pretium ullamcorper. Mauris mattis, dolor vitae consectetur consectetur, ex nisi aliquam tortor, a accumsan dui mauris eu lectus. Etiam in sodales lorem, a condimentum mi. Donec bibendum ante quis nisl tincidunt, vel pretium libero posuere. Sed efficitur ultrices augue ac cursus. Curabitur id magna sit amet ipsum pharetra fringilla nec lobortis augue. Curabitur euismod massa eget metus venenatis bibendum. Nullam in lorem sodales, tincidunt mi sed, facilisis eros. Etiam viverra non erat at gravida. Etiam nec lorem augue. Fusce blandit dui sem, in congue massa commodo eu. Integer suscipit, diam feugiat porta fermentum, sapien felis tincidunt tellus, vel gravida diam mi in quam. Fusce euismod quam ipsum, ac pharetra dui cursus in.</p>
+        </section>
+    </body>
+    <script type="text/javascript">
+        (function() {
+            var searchbox = function(settings) {
+                settings = Object.assign({
+                    classname: '', // CSS class of the searchbox component
+                    searchFunction: '' // must accept a search term and a success handler as inputs
+                }, settings);
+
+                var initialize = function() {
+                    // every time something is typed, a new search is executed and results are displayed
+                    document.querySelector('.' + settings.classname + ' .searchfield').addEventListener('keyup', function(event) {
+                        search(event.target.value);
+                    });
+
+                    // bind keyboard navigation: up key
+
+                    // bind keyboard navigation: down key
+
+                    // bind keyboard navigation: enter key and clicking the "clear x" on the search input
+                    document.querySelector('.' + settings.classname + ' .searchfield').addEventListener('search', function(event) {
+                        search(event.target.value);
+                    });
+                };
+
+                var search = function(searchTerm) {
+                    settings.searchFunction(searchTerm, renderSearchResults);
+                };
+
+                var renderSearchResults = function(searchTerm) {
+                    // temporary
+                    document.querySelector('.' + settings.classname + ' .results').style.display = 'block';
+
+                    // create list items
+
+                    // highlight searchTerm
+                };
+
+                initialize();
+            };
+
+
+            searchbox({
+                classname: 'githubSearchbox',
+                searchFunction: function(searchTerm, callback) {
+                    // https://api.github.com/search/users
+                    // 54921be5ba13b13089a7b18f3e8650a8237c1d02
+                    callback(searchTerm);
+                }
+            });
+        })();
+    </script>
+</html>
