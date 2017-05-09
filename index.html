@@ -2,16 +2,7 @@
     <head>
         <meta charset="UTF-8">
         <style>
-            .searchbox {
-
-            }
-            .searchbox .searchfield {
-
-            }
-            .searchbox .results {
-                display: none;
-            }
-            .searchbox .user {
+            .searchbox .result {
                 list-style: none;
                 border: 1px solid black;
                 border-top: 0;
@@ -21,20 +12,16 @@
     </head>
     <body>
         <div class="searchbox githubSearchbox">
-            <input class="searchfield" placeholder="type a github username" type="search">
+            <input class="searchField" placeholder="" type="search">
             <ul class="results">
-                <li class="user">
-                    <img class="avatar" src="">
-                    <span class="name">Name 1</span>
-                </li>
-                <li class="user">
-                    <img class="avatar" src="">
-                    <span class="name">Name 2</span>
-                </li>
-                <li class="user">
-                    <img class="avatar" src="">
-                    <span class="name">Name 3</span>
-                </li>
+                <template class="result">
+                    <li class="result">
+                        <a href="">
+                            <img src="">
+                            <span></span>
+                        </a>
+                    </li>
+                </template>
             </ul>
         </div>
 
@@ -52,12 +39,17 @@
             var searchbox = function(settings) {
                 settings = Object.assign({
                     classname: '', // CSS class of the searchbox component
+                    placeholder: 'type a search term', 
                     searchFunction: '' // must accept a search term and a success handler as inputs
                 }, settings);
 
                 var initialize = function() {
+                    var searchField = document.querySelector('.' + settings.classname + ' .searchField');
+
+                    searchField.placeholder = settings.placeholder;
+
                     // every time something is typed, a new search is executed and results are displayed
-                    document.querySelector('.' + settings.classname + ' .searchfield').addEventListener('keyup', function(event) {
+                    searchField.addEventListener('keyup', function(event) {
                         search(event.target.value);
                     });
 
@@ -66,26 +58,42 @@
                     // bind keyboard navigation: down key
 
                     // bind keyboard navigation: enter key and clicking the "clear x" on the search input
-                    document.querySelector('.' + settings.classname + ' .searchfield').addEventListener('search', function(event) {
+                    searchField.addEventListener('search', function(event) {
                         search(event.target.value);
                     });
                 };
 
                 var search = function(searchTerm) {
-                    settings.searchFunction(searchTerm, renderSearchResults);
+                    clearSearchResults();
+
+                    if(searchTerm) {
+                        settings.searchFunction(searchTerm, renderSearchResults);
+                    }
+                };
+
+                var clearSearchResults = function() {
+                    document.querySelectorAll('.' + settings.classname + ' .results > li.result').forEach(function(result) {
+                        result.parentNode.removeChild(result);
+                    });
                 };
 
                 var renderSearchResults = function(searchTerm, users) {
-                    // temporary
-                    document.querySelector('.' + settings.classname + ' .results').style.display = 'block';
+                    var results = document.querySelector('.' + settings.classname + ' .results');
 
-                    // create list items
-                    console.log(users);
-                    // avatar_url
-                    // html_url
-                    // login
+                    users.forEach(function(user) {
+                        // highlight searchTerm
+                        var username = user.login || '';
+                        username = username.replace(searchTerm, '<strong>' + searchTerm + '</strong>'); // meh…
 
-                    // highlight searchTerm
+                        // create result element
+                        var result = document.querySelector('.searchbox template.result').content;
+                        result.querySelector('img').src = user.avatar_url || '';
+                        result.querySelector('a').href = user.html_url || '';
+                        result.querySelector('span').innerHTML = username;
+
+                        // append to DOM
+                        results.appendChild(document.importNode(result, true));
+                    });
                 };
 
                 initialize();
@@ -94,13 +102,14 @@
 
             searchbox({
                 classname: 'githubSearchbox',
+                placeholder: 'type a github username',
                 searchFunction: function(searchTerm, callback) {
                     var url = 'https://api.github.com/search/users?access_token=54921be5ba13b13089a7b18f3e8650a8237c1d02&q=' + encodeURIComponent(searchTerm); // seriously?!
 
                     fetch(url).then(function(response) {
                         if(response.ok) {
                             response.json().then(function(users) {
-                                callback(searchTerm, users);
+                                callback(searchTerm, users.items);
                             });
                         }
                     });
