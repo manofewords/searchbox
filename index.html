@@ -140,22 +140,22 @@
                     });
                 };
 
-                var renderSearchResults = function(searchTerm, users) {
-                    var results = document.querySelector('.' + settings.classname + ' .results');
+                // results is a [{image:'…', link:'…', text:'…'}]
+                var renderSearchResults = function(searchTerm, results) {
+                    var resultsElement = document.querySelector('.' + settings.classname + ' .results');
 
-                    users.forEach(function(user) {
+                    results.forEach(function(result) {
                         // highlight searchTerm
-                        var username = user.login || '';
-                        username = username.replace(new RegExp('(' + searchTerm + ')', 'i'), '<strong>$1</strong>'); // meh… TODO: HTML in JavaScript: bad!
+                        var text = result.text.replace(new RegExp('(' + searchTerm + ')', 'i'), '<strong>$1</strong>'); // meh… TODO: HTML in JavaScript: bad!
 
                         // create result element
-                        var result = document.querySelector('.searchbox template.result').content;
-                        result.querySelector('img').src = user.avatar_url || '';
-                        result.querySelector('a').href = user.html_url || '';
-                        result.querySelector('span').innerHTML = username;
+                        var resultElement = document.querySelector('.searchbox template.result').content;
+                        resultElement.querySelector('img').src = result.image;
+                        resultElement.querySelector('a').href = result.link;
+                        resultElement.querySelector('span').innerHTML = text;
 
                         // append to DOM
-                        results.appendChild(document.importNode(result, true));
+                        resultsElement.appendChild(document.importNode(resultElement, true));
                     });
                 };
 
@@ -166,13 +166,19 @@
             searchbox({
                 classname: 'githubSearchbox',
                 placeholder: 'type a github username',
-                searchFunction: function(searchTerm, callback) {
+                searchFunction: function(searchTerm, renderSearchResults) {
                     var url = 'https://api.github.com/search/users?access_token=54921be5ba13b13089a7b18f3e8650a8237c1d02&q=' + encodeURIComponent(searchTerm) + '+in:login'; // seriously?! no query param support?
 
                     fetch(url).then(function(response) {
                         if(response.ok) {
                             response.json().then(function(users) {
-                                callback(searchTerm, users.items);
+                                renderSearchResults(searchTerm, users.items.map(function(user) {
+                                    return {
+                                        image: user.avatar_url || '',
+                                        link: user.html_url || '',
+                                        text: user.login || ''
+                                    };
+                                }));
                             });
                         }
                     });
