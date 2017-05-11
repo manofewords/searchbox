@@ -32,3 +32,4 @@ Up until [this commit](https://github.com/manofewords/searchbox/commit/251037c1d
 - CSS reset, use one of the usual ones
 - in real life, I would need to look into browser support, e.g. a [polyfill](https://github.com/github/fetch) for fetch, another one for HTML templates (see [browser support](http://caniuse.com/#feat=template))
 - CSS improvement overall: I'm really not used anymore _not_ to use Sass, with nesting, variables, mixins. I wanted to look into [CSS custom properties](https://www.smashingmagazine.com/2017/04/start-using-css-custom-properties/) but didn't have time in the end
+- in my opinion, the GitHub API sometimes returns weird matches. I would need more time to look into that
