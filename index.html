@@ -21,70 +21,12 @@
                 font-size: 20px;
                 font-family: sans-serif;
             }
-
-            /* component */
-
-            .searchbox {
-                position: relative;
-            }
-            .searchbox .searchField {
-                height: 2rem;
-                border: 1px solid #bbbbbb;
-                font-size: 1rem;
-            }
-            .searchbox .searchField,
-            .searchbox .results {
-                max-width: 400px;
-                width: 100%;
-            }
-            .searchbox .results {
-                z-index: 1;
-                position: absolute;
-                top: 2rem;
-                left: 0;
-                background: #ffffff;
-            }
-            .searchbox .result {
-                list-style: none;
-                border: 1px solid #cccccc;
-                border-top: 0;
-                padding: 0.5rem 1rem;
-            }
-            .searchbox .result:hover {
-                background-color: #ccccff;
-            }
-            .searchbox .result a {
-                display: flex;
-                align-items: center;
-                justify-content: start;
-
-                color: #000000;
-                text-decoration: none;
-            }
-            .searchbox .result a img {
-                width: 2rem;
-                height: 2rem;
-            }
-            .searchbox .result a span {
-                flex-grow: 1;
-                margin-left: 1rem;
-            }
         </style>
+
+        <link rel="import" href="components/searchbox.html">
     </head>
     <body>
-        <div class="searchbox githubSearchbox">
-            <input class="searchField" placeholder="" type="search">
-            <ul class="results">
-                <template class="result">
-                    <li class="result">
-                        <a href="">
-                            <img src="">
-                            <span></span>
-                        </a>
-                    </li>
-                </template>
-            </ul>
-        </div>
+        <div class="githubSearchbox"></div>
 
         <section>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus tincidunt justo est, vitae fringilla turpis pulvinar vitae. Curabitur eget pellentesque nisi. Ut id ante id ex convallis pretium vulputate quis ante. Sed nec arcu id magna vehicula interdum. Nam gravida laoreet dignissim. Phasellus mauris dolor, blandit fermentum tincidunt sit amet, pretium a augue. Nullam vel augue vitae neque pharetra tristique. Aenean quis erat vel enim blandit finibus ut ac ex. Phasellus varius ligula in condimentum elementum. Duis id ipsum at arcu hendrerit posuere. Praesent eget iaculis massa, nec iaculis eros.</p>
@@ -97,74 +39,10 @@
     </body>
     <script type="text/javascript">
         (function() {
-            var searchbox = function(settings) {
-                settings = Object.assign({
-                    classname: '', // CSS class of the searchbox component
-                    placeholder: 'type a search term', 
-                    searchFunction: '' // must accept a search term and a success handler as inputs
-                }, settings);
-
-                var initialize = function() {
-                    var searchField = document.querySelector('.' + settings.classname + ' .searchField');
-
-                    searchField.placeholder = settings.placeholder;
-
-                    // every time something is typed, a new search is executed and results are displayed
-                    searchField.addEventListener('keyup', function(event) {
-                        search(event.target.value);
-                    });
-
-                    // TODO: bind keyboard navigation: up key
-
-                    // TODO: bind keyboard navigation: down key
-
-                    // bind keyboard navigation: enter key and clicking the "clear x" on the search input
-                    searchField.addEventListener('search', function(event) {
-                        // TODO: exclude up and down key
-
-                        search(event.target.value);
-                    });
-                };
-
-                var search = function(searchTerm) {
-                    clearSearchResults();
-
-                    if(searchTerm) {
-                        settings.searchFunction(searchTerm, renderSearchResults);
-                    }
-                };
-
-                var clearSearchResults = function() {
-                    document.querySelectorAll('.' + settings.classname + ' .results > li.result').forEach(function(result) {
-                        result.parentNode.removeChild(result);
-                    });
-                };
-
-                // results is a [{image:'…', link:'…', text:'…'}]
-                var renderSearchResults = function(searchTerm, results) {
-                    var resultsElement = document.querySelector('.' + settings.classname + ' .results');
-
-                    results.forEach(function(result) {
-                        // highlight searchTerm
-                        var text = result.text.replace(new RegExp('(' + searchTerm + ')', 'i'), '<strong>$1</strong>'); // meh… TODO: HTML in JavaScript: bad!
-
-                        // create result element
-                        var resultElement = document.querySelector('.searchbox template.result').content;
-                        resultElement.querySelector('img').src = result.image;
-                        resultElement.querySelector('a').href = result.link;
-                        resultElement.querySelector('span').innerHTML = text;
-
-                        // append to DOM
-                        resultsElement.appendChild(document.importNode(resultElement, true));
-                    });
-                };
-
-                initialize();
-            };
-
-
+            // instanciate searchbox component
+            document.querySelector('.githubSearchbox').appendChild(document.querySelector('link[rel="import"]').import.querySelector('.searchbox').cloneNode(true));
             searchbox({
-                classname: 'githubSearchbox',
+                containerClassname: 'githubSearchbox',
                 placeholder: 'type a github username',
                 searchFunction: function(searchTerm, renderSearchResults) {
                     var url = 'https://api.github.com/search/users?access_token=54921be5ba13b13089a7b18f3e8650a8237c1d02&q=' + encodeURIComponent(searchTerm) + '+in:login'; // seriously?! no query param support?
