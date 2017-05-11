@@ -146,7 +146,7 @@
                     users.forEach(function(user) {
                         // highlight searchTerm
                         var username = user.login || '';
-                        username = username.replace(searchTerm, '<strong>' + searchTerm + '</strong>'); // meh…
+                        username = username.replace(new RegExp('(' + searchTerm + ')', 'i'), '<strong>$1</strong>'); // meh… TODO: HTML in JavaScript: bad!
 
                         // create result element
                         var result = document.querySelector('.searchbox template.result').content;
