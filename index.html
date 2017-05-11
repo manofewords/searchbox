@@ -32,6 +32,9 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus tincidunt justo est, vitae fringilla turpis pulvinar vitae. Curabitur eget pellentesque nisi. Ut id ante id ex convallis pretium vulputate quis ante. Sed nec arcu id magna vehicula interdum. Nam gravida laoreet dignissim. Phasellus mauris dolor, blandit fermentum tincidunt sit amet, pretium a augue. Nullam vel augue vitae neque pharetra tristique. Aenean quis erat vel enim blandit finibus ut ac ex. Phasellus varius ligula in condimentum elementum. Duis id ipsum at arcu hendrerit posuere. Praesent eget iaculis massa, nec iaculis eros.</p>
             <p>Nulla lobortis rutrum tempus. Cras aliquet eu lectus ac viverra. Donec vestibulum ipsum eu felis pretium ullamcorper. Mauris mattis, dolor vitae consectetur consectetur, ex nisi aliquam tortor, a accumsan dui mauris eu lectus. Etiam in sodales lorem, a condimentum mi. Donec bibendum ante quis nisl tincidunt, vel pretium libero posuere. Sed efficitur ultrices augue ac cursus. Curabitur id magna sit amet ipsum pharetra fringilla nec lobortis augue. Curabitur euismod massa eget metus venenatis bibendum. Nullam in lorem sodales, tincidunt mi sed, facilisis eros. Etiam viverra non erat at gravida. Etiam nec lorem augue. Fusce blandit dui sem, in congue massa commodo eu. Integer suscipit, diam feugiat porta fermentum, sapien felis tincidunt tellus, vel gravida diam mi in quam. Fusce euismod quam ipsum, ac pharetra dui cursus in.</p>
         </section>
+
+        <div class="emailSearchbox"></div>
+
         <section>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus tincidunt justo est, vitae fringilla turpis pulvinar vitae. Curabitur eget pellentesque nisi. Ut id ante id ex convallis pretium vulputate quis ante. Sed nec arcu id magna vehicula interdum. Nam gravida laoreet dignissim. Phasellus mauris dolor, blandit fermentum tincidunt sit amet, pretium a augue. Nullam vel augue vitae neque pharetra tristique. Aenean quis erat vel enim blandit finibus ut ac ex. Phasellus varius ligula in condimentum elementum. Duis id ipsum at arcu hendrerit posuere. Praesent eget iaculis massa, nec iaculis eros.</p>
             <p>Nulla lobortis rutrum tempus. Cras aliquet eu lectus ac viverra. Donec vestibulum ipsum eu felis pretium ullamcorper. Mauris mattis, dolor vitae consectetur consectetur, ex nisi aliquam tortor, a accumsan dui mauris eu lectus. Etiam in sodales lorem, a condimentum mi. Donec bibendum ante quis nisl tincidunt, vel pretium libero posuere. Sed efficitur ultrices augue ac cursus. Curabitur id magna sit amet ipsum pharetra fringilla nec lobortis augue. Curabitur euismod massa eget metus venenatis bibendum. Nullam in lorem sodales, tincidunt mi sed, facilisis eros. Etiam viverra non erat at gravida. Etiam nec lorem augue. Fusce blandit dui sem, in congue massa commodo eu. Integer suscipit, diam feugiat porta fermentum, sapien felis tincidunt tellus, vel gravida diam mi in quam. Fusce euismod quam ipsum, ac pharetra dui cursus in.</p>
@@ -60,6 +63,27 @@
                             });
                         }
                     });
+                }
+            });
+
+            // instanciate another searchbox component
+            // that searches locally in a list of emails
+            document.querySelector('.emailSearchbox').appendChild(document.querySelector('link[rel="import"]').import.querySelector('.searchbox').cloneNode(true));
+            searchbox({
+                containerClassname: 'emailSearchbox',
+                placeholder: 'type an email',
+                searchFunction: function(searchTerm, renderSearchResults) {
+                    var emails = ['alphonse@ginetta.ch', 'bertha@ginetta.ch', 'carlito@ginetta.ch'];
+
+                    renderSearchResults(searchTerm, emails.filter(function(email) {
+                        return (new RegExp(searchTerm, 'i')).test(email);
+                    }).map(function(email) {
+                        return {
+                            image: '',
+                            link: '',
+                            text: email
+                        };
+                    }));
                 }
             });
         })();
