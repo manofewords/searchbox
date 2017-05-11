@@ -1,12 +1,73 @@
 <!DOCTYPE html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <style>
+            /* CSS reset */
+
+            ul, li {
+                margin: 0;
+                padding: 0;
+            }
+            input {
+                border: none;
+                box-shadow: none;
+            }
+
+            /* page */
+
+            body {
+                font-size: 20px;
+                font-family: sans-serif;
+            }
+
+            /* component */
+
+            .searchbox {
+                position: relative;
+            }
+            .searchbox .searchField {
+                height: 2rem;
+                border: 1px solid #bbbbbb;
+                font-size: 1rem;
+            }
+            .searchbox .searchField,
+            .searchbox .results {
+                max-width: 400px;
+                width: 100%;
+            }
+            .searchbox .results {
+                z-index: 1;
+                position: absolute;
+                top: 2rem;
+                left: 0;
+                background: #ffffff;
+            }
             .searchbox .result {
                 list-style: none;
-                border: 1px solid black;
+                border: 1px solid #cccccc;
                 border-top: 0;
-                padding: 1em;
+                padding: 0.5rem 1rem;
+            }
+            .searchbox .result:hover {
+                background-color: #ccccff;
+            }
+            .searchbox .result a {
+                display: flex;
+                align-items: center;
+                justify-content: start;
+
+                color: #000000;
+                text-decoration: none;
+            }
+            .searchbox .result a img {
+                width: 2rem;
+                height: 2rem;
+            }
+            .searchbox .result a span {
+                flex-grow: 1;
+                margin-left: 1rem;
             }
         </style>
     </head>
